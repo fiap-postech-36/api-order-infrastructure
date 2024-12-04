@@ -29,6 +29,10 @@ jobs:
       - name: Update Kube Config
         run: aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.REGION_DEFAULT }}
 
+      - name: Deploy DB
+        run: |
+          kubectl apply -f k8s-deploy/db/ --validate=false
+
       - name: Deploy EKS
         run: |
-          kubectl apply -f k8s-deploy/ --validate=false
+          kubectl apply -f k8s-deploy/api/ --validate=false
