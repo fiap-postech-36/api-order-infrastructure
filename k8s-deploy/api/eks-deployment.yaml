@@ -47,23 +47,3 @@ spec:
               cpu: 10m
             limits:
               cpu: 200m
-        # RabbitMQ
-        - name: rabbitmq
-          image: rabbitmq:3.10-management
-          ports:
-            - containerPort: 5672
-            - containerPort: 15672
-          env:
-            - name: RABBITMQ_DEFAULT_USER
-              value: "ulysses"
-            - name: RABBITMQ_DEFAULT_PASS
-              value: "senha123"
-          volumeMounts:
-            - name: rabbitmq-data
-              mountPath: /var/lib/rabbitmq
-
-      volumes:
-        - name: mongodb-data
-          emptyDir: {}  # Volume temporário para MongoDB
-        - name: rabbitmq-data
-          emptyDir: {}
