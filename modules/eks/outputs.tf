@@ -1,15 +1,11 @@
 output "endpoint" {
-  value = aws_eks_cluster.cluster-created.endpoint
+  value = length(aws_eks_cluster.cluster-created) > 0 ? aws_eks_cluster.cluster-created[0].endpoint : "Cluster not created"
 }
 
 output "cluster_name" {
-  value = aws_eks_cluster.cluster-created.name
+  value = length(aws_eks_cluster.cluster-created) > 0 ? aws_eks_cluster.cluster-created[0].name : var.cluster_name
 }
 
 output "cluster_ca_certificate" {
-  value = aws_eks_cluster.cluster-created.certificate_authority[0].data
-}
-
-output "subnet_data" {
-  value = data.aws_subnets.subnets
+  value = length(aws_eks_cluster.cluster-created) > 0 ? aws_eks_cluster.cluster-created[0].certificate_authority[0].data : "No certificate available"
 }

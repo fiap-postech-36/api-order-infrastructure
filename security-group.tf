@@ -1,15 +1,15 @@
-resource "aws_security_group" "sg_cluster" {
+resource "aws_security_group" "sg_cluster_ms" {
   name   = "${var.project_name}-sg"
   vpc_id = module.vpc.vpc_id
 }
 
 resource "aws_security_group_rule" "cluster_in" {
   type              = "ingress"
-  from_port         = 5432
-  to_port           = 5432
+  from_port         = 27017
+  to_port           = 27017
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.sg_cluster.id
+  security_group_id = aws_security_group.sg_cluster_ms.id
 }
 
 resource "aws_security_group_rule" "cluster_amqp" {
@@ -18,7 +18,7 @@ resource "aws_security_group_rule" "cluster_amqp" {
   to_port           = 8080
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.sg_cluster.id
+  security_group_id = aws_security_group.sg_cluster_ms.id
 }
 
 resource "aws_security_group_rule" "cluster_app" {
@@ -27,7 +27,7 @@ resource "aws_security_group_rule" "cluster_app" {
   to_port           = 80
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.sg_cluster.id
+  security_group_id = aws_security_group.sg_cluster_ms.id
 }
 
 resource "aws_security_group_rule" "cluster_out" {
@@ -36,5 +36,5 @@ resource "aws_security_group_rule" "cluster_out" {
   to_port           = 0
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.sg_cluster.id
+  security_group_id = aws_security_group.sg_cluster_ms.id
 }

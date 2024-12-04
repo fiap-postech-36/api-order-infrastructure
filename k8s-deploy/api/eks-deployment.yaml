@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment-order
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pod-order
+  template:
+    metadata:
+      name: pod-order
+      labels:
+        app: pod-order
+    spec:
+      containers:
+        - name: api-order-container
+          image: kaique98/api-order-group-36:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: RABBIT_HOST
+              value: "af4b45659baf047e49724279ab7d29eb-1909975876.us-east-1.elb.amazonaws.com"
+            - name: RABBIT_USER
+              value: "fiap"
+            - name: RABBIT_PASSWORD
+              value: "GpP36_Fiap@2024!"
+          envFrom:
+            - configMapRef:
+                name: api-configmap
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /order/actuator/health/liveness
+            periodSeconds: 5
+            failureThreshold: 3
+            initialDelaySeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /order/actuator/health/readiness
+            periodSeconds: 5
+            failureThreshold: 3
+            initialDelaySeconds: 15
+          resources:
+            requests:
+              cpu: 10m
+            limits:
+              cpu: 200m
+        # RabbitMQ
+        - name: rabbitmq
+          image: rabbitmq:3.10-management
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: "ulysses"
+            - name: RABBITMQ_DEFAULT_PASS
+              value: "senha123"
+          volumeMounts:
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
+
+      volumes:
+        - name: mongodb-data
+          emptyDir: {}  # Volume temporário para MongoDB
+        - name: rabbitmq-data
+          emptyDir: {}

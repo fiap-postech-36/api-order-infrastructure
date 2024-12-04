@@ -17,3 +17,9 @@ variable "security_group_id" {
   description = "The security group IDs to associate with the EKS cluster"
   type        = string
 }
+
+variable "create_eks" {
+  description = "Define if EKS should be created"
+  type        = bool
+  default     = true
+}
