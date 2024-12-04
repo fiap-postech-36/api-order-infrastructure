@@ -10,16 +10,16 @@ variable "project_name" {
   default = "ms-order"
 }
 
-variable "DEFAULT_USER" {
-  description = "Default user for RabbitMQ"
-  type        = string
-  default = "fiap"
-}
-
 variable "DEFAULT_PASS" {
   description = "Default password for RabbitMQ"
   type        = string
   default = "GpP36_Fiap@2024!"
+}
+
+variable "DEFAULT_USER" {
+  description = "Default user for RabbitMQ"
+  type        = string
+  default = "fiap"
 }
 
 variable "RABBITMQ_HOST" {
